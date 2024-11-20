@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">EcoTrack</string>
+    <string name="title_home">Home</string>
     <string name="title_map">Mappa</string>
-    <string name="title_notifications">Notifiche</string>
     <string name="google_maps_api_key">AIzaSyAtuOh5XDmCqPgXIAedccCN70IqODLpL7c</string>
 </resources>
