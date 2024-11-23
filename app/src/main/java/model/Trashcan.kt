@@ -1,9 +1,11 @@
 package model
 
 data class Trashcan (
-    var latitude: Double,
-    var longitude: Double,
-    var fillinglevel : Int,
-    var batterylevel: Int,
-    var trashtype: String
+    val id: Long,
+    val latitude: Double,
+    val longitude: Double,
+    val fillinglevel : Int,
+    val batteryLevel: Int,
+    val trashType: String,
+
 )
