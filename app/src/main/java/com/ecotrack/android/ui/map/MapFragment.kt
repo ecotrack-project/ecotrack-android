@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.ecotrack.android.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -17,24 +19,31 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mapView: MapView
+    private lateinit var viewModel: MapViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var googleMap: GoogleMap? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val DEFAULT_ZOOM_LEVEL = 15f
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
 
+        // Initialize MapView and ViewModel
         mapView = rootView.findViewById(R.id.mapView)
+        viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        // Set up the MapView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         return rootView
     }
@@ -42,28 +51,71 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        // Verifica e richiedi permessi
+        // Check and request location permissions
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        } else {
             enableUserLocation()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         }
+
+        // Observe ViewModel data for markers and trashcans
+        observeMarkers()
+        observeTrashcans()
     }
 
     @SuppressLint("MissingPermission")
     private fun enableUserLocation() {
+        // Enable user location on the map
         googleMap?.isMyLocationEnabled = true
 
+        // Move the camera to the user's location if available
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
                 val userLatLng = LatLng(it.latitude, it.longitude)
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f))
+
+                // Update ViewModel with user location
+                viewModel.updateUserLocation(userLatLng)
+
+                // Center camera on user location
+                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, DEFAULT_ZOOM_LEVEL))
+            } ?: Toast.makeText(context, "User location unavailable", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun observeMarkers() {
+        // Observe markers list from ViewModel
+        viewModel.markers.observe(viewLifecycleOwner) { markers ->
+            googleMap?.clear() // Clear existing markers
+            markers.forEach { marker ->
+                googleMap?.addMarker(
+                    MarkerOptions()
+                        .position(marker.position)
+                        .title(marker.title)
+                )
             }
         }
+    }
+
+    private fun observeTrashcans() {
+        // Observe trashcan data from ViewModel
+        viewModel.trashcans.observe(viewLifecycleOwner) { trashcans ->
+            trashcans.forEach { trashcan ->
+                // Add a marker for each trashcan
+                val position = LatLng(trashcan.latitude, trashcan.longitude)
+                googleMap?.addMarker(
+                    MarkerOptions()
+                        .position(position)
+                        .title("Trashcan ID: ${trashcan.id}")
+                )
+            }
+        }
+
+        // Trigger data loading in ViewModel
+        viewModel.loadTrashcans()
     }
 
     override fun onRequestPermissionsResult(
@@ -71,11 +123,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE &&
+            grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
             enableUserLocation()
+        } else {
+            Toast.makeText(context, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
+    // Handle lifecycle events for MapView
     override fun onResume() {
         super.onResume()
         mapView.onResume()

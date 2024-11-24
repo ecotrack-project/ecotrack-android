@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ecotrack.android.R
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import android.widget.Button
 
 class FormFragment : Fragment(R.layout.fragment_form) {
@@ -30,6 +29,9 @@ class FormFragment : Fragment(R.layout.fragment_form) {
             if (userEmail.isEmpty() || trashcanId == null || description.isEmpty()) {
                 Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             } else {
+                // Change background color to white
+                view.setBackgroundColor(resources.getColor(android.R.color.white, null))
+
                 // Simulate form submission
                 Toast.makeText(context, "Form submitted:\n$userEmail\n$trashcanId\n$description", Toast.LENGTH_LONG).show()
             }
