@@ -16,4 +16,10 @@
         android:name="com.ecotrack.android.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_report"
+        android:name="com.ecotrack.android.ui.form.FormFragment"
+        android:label="@string/title_report"
+        tools:layout="@layout/fragment_form" />
 </navigation>

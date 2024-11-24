@@ -90,7 +90,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 googleMap?.addMarker(
                     MarkerOptions()
                         .position(marker.position)
-                        .title(marker.title)
                 )
             }
         }

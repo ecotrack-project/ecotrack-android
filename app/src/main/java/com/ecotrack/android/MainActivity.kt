@@ -36,15 +36,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Handle navigation to FormFragment when button is clicked
-        val openFormButton: Button? = findViewById(R.id.openFormButton)
 
-        openFormButton?.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, FormFragment()) // Corrected container ID
-                .addToBackStack(null) // Adds to back stack for proper navigation
-                .commit()
-        }
 
     }
 }
