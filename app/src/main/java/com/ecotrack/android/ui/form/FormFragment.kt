@@ -8,6 +8,7 @@ import com.ecotrack.android.R
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.Button
 
+
 class FormFragment : Fragment(R.layout.fragment_form) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,6 +25,7 @@ class FormFragment : Fragment(R.layout.fragment_form) {
             val userEmail = emailEditText.text.toString()
             val trashcanId = trashcanIdEditText.text.toString().toLongOrNull()
             val description = descriptionEditText.text.toString()
+
 
             // Validate input
             if (userEmail.isEmpty() || trashcanId == null || description.isEmpty()) {

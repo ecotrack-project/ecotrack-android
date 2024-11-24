@@ -10,10 +10,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 data class MarkerData(
     val position: LatLng,
-    val title: String
+    val fillinglevel: Int,
+    val trashType: String,
 )
+
 
 class MapViewModel : ViewModel() {
 
@@ -25,6 +28,7 @@ class MapViewModel : ViewModel() {
     private val _userLocation = MutableLiveData<LatLng>()
     val userLocation: LiveData<LatLng> get() = _userLocation
 
+
     // LiveData for trashcans
     private val _trashcans = MutableLiveData<List<Trashcan>>()
     val trashcans: LiveData<List<Trashcan>> get() = _trashcans
@@ -33,29 +37,34 @@ class MapViewModel : ViewModel() {
     init { // Called when the ViewModel is instantiated
         // Initialize with predefined markers
         _markers.value = listOf(
-            MarkerData(LatLng(40.730610, -73.935242), "Marker in New York"),
-            MarkerData(LatLng(45.464664, 9.188540), "Marker in Milan"),
-            MarkerData(LatLng(48.856613, 2.352222), "Marker in Paris")
+            MarkerData(LatLng(40.730610, -73.935242),80, "Plastic"),
+            MarkerData(LatLng(45.464664, 9.188540),90, "Glass"),
+            MarkerData(LatLng(48.856613, 2.352222),10, "Paper"),
         )
     }
 
     fun loadTrashcans() {
         val apiService = RetrofitClient.instance // Instance of the Retrofit service interface TrashcanService
         apiService.getAllTrashcans().enqueue(object : Callback<List<Trashcan>> {
+
             override fun onResponse(call: Call<List<Trashcan>>, response: Response<List<Trashcan>>) {
+
                 if (response.isSuccessful) {
                     val trashcans = response.body()
+
                     trashcans?.let {
-                        _trashcans.value = it // Update LiveData for trashcans
+                        _trashcans.value = it // Update LiveData for trashcans with the new data
 
                         // Update markers with trashcan data
                         val trashcanMarkers = it.map { trashcan ->
                             MarkerData(
                                 position = LatLng(trashcan.latitude, trashcan.longitude),
-                                title = "Trashcan ID: ${trashcan.id}"
+                                fillinglevel = trashcan.fillinglevel,
+                                trashType = trashcan.trashType
                             )
                         }
-                        _markers.value = trashcanMarkers
+
+                        _markers.value = trashcanMarkers // We update the markers with the new trashcan data
                     }
                 } else {
                     println("Error: ${response.code()} - ${response.message()}")
@@ -72,6 +81,7 @@ class MapViewModel : ViewModel() {
         _userLocation.value = location
     }
 
+
     fun addMarker(marker: MarkerData) {
         val updatedMarkers = _markers.value.orEmpty().toMutableList()
         updatedMarkers.add(marker)
@@ -83,4 +93,7 @@ class MapViewModel : ViewModel() {
         updatedMarkers.remove(marker)
         _markers.value = updatedMarkers
     }
+
+
+
 }

@@ -11,6 +11,7 @@ import com.ecotrack.android.databinding.ActivityMainBinding
 import com.ecotrack.android.ui.form.FormFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -37,11 +38,13 @@ class MainActivity : AppCompatActivity() {
 
         // Handle navigation to FormFragment when button is clicked
         val openFormButton: Button? = findViewById(R.id.openFormButton)
+
         openFormButton?.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment_activity_main, FormFragment()) // Corrected container ID
                 .addToBackStack(null) // Adds to back stack for proper navigation
                 .commit()
         }
+
     }
 }
