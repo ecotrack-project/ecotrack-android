@@ -19,7 +19,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+
+
+
+
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -58,9 +63,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         }
 
+        // Set the OnMarkerClickListener
+        googleMap?.setOnMarkerClickListener { marker ->
+            handleMarkerClick(marker)
+            true // Return true to consume the event
+        }
+
         // Observe ViewModel data for markers and trashcans
         observeMarkers()
         observeTrashcans()
+
+
     }
 
     @SuppressLint("MissingPermission")
@@ -82,18 +95,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+
+    private val markerDataMap = mutableMapOf<Marker, MarkerData>()
+
     private fun observeMarkers() {
-        // Observe markers list from ViewModel
         viewModel.markers.observe(viewLifecycleOwner) { markers ->
             googleMap?.clear() // Clear existing markers
-            markers.forEach { marker ->
+            markerDataMap.clear() // Clear existing associations
+
+            markers.forEach { markerData ->
                 googleMap?.addMarker(
-                    MarkerOptions()
-                        .position(marker.position)
-                )
+                    MarkerOptions().position(markerData.position)
+                )?.let { marker ->
+                    markerDataMap[marker] = markerData // Associate marker with its data
+                }
             }
         }
     }
+
 
     private fun observeTrashcans() {
         // Observe trashcan data from ViewModel
@@ -113,11 +132,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         viewModel.loadTrashcans()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE &&
             grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -127,6 +142,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             Toast.makeText(context, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun handleMarkerClick(marker: Marker) {
+        val markerData = markerDataMap[marker]
+        markerData?.let {
+            val dialogFragment = MarkerDetailsFragment.newInstance(it.trashType, it.fillinglevel)
+            dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
+        }
+    }
+
+
+
+
 
     // Handle lifecycle events for MapView
     override fun onResume() {

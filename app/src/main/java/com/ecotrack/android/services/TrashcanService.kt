@@ -1,4 +1,4 @@
-package services
+package com.ecotrack.android.services
 import model.Trashcan
 import retrofit2.Call
 import retrofit2.Retrofit

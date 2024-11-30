@@ -1,4 +1,4 @@
-package services
+package com.ecotrack.android.services
 import model.Report
 import retrofit2.http.POST
 import retrofit2.Call

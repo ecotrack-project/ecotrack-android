@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import services.RetrofitClient
+import com.ecotrack.android.services.RetrofitClient
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.model.Marker
 import model.Trashcan
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,11 +39,14 @@ class MapViewModel : ViewModel() {
     init { // Called when the ViewModel is instantiated
         // Initialize with predefined markers
         _markers.value = listOf(
-            MarkerData(LatLng(40.730610, -73.935242),80, "Plastic"),
+            MarkerData(LatLng(37.422131, -122.084801),80, "Plastic"),
             MarkerData(LatLng(45.464664, 9.188540),90, "Glass"),
             MarkerData(LatLng(48.856613, 2.352222),10, "Paper"),
         )
+
+
     }
+
 
     fun loadTrashcans() {
         val apiService = RetrofitClient.instance // Instance of the Retrofit service interface TrashcanService
