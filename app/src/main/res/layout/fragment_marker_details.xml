@@ -1,10 +1,10 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/rounded_dialog_background"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/rounded_dialog_background">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/closeButton"
@@ -17,19 +17,19 @@
         android:id="@+id/trashTypeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
         android:ellipsize="none"
         android:singleLine="false"
-        android:text="@string/trash_type" />
+        android:text="@string/trash_type"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/fillingLevelTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
         android:ellipsize="none"
         android:singleLine="false"
+        android:text="@string/filling_level"
         android:textColor="@android:color/black"
-        android:text="@string/filling_level" />
+        android:textSize="16sp" />
 </LinearLayout>

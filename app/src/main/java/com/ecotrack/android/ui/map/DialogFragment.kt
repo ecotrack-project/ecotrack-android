@@ -27,6 +27,7 @@ class MarkerDetailsFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         trashType = arguments?.getString("trashType")
         fillinglevel = arguments?.getInt("fillinglevel")
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar)
     }
 
     override fun onCreateView(
