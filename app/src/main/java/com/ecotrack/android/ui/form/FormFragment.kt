@@ -7,35 +7,44 @@ import androidx.fragment.app.Fragment
 import com.ecotrack.android.R
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.Button
-
+import androidx.core.content.ContextCompat
 
 class FormFragment : Fragment(R.layout.fragment_form) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Find views
+        // Retrieve the trashcan ID from arguments and fill the field if available
+        val trashcanId = arguments?.getInt("trashcanId", -1) // Default to -1 if not passed
+        val trashcanIdField: TextInputEditText = view.findViewById(R.id.editTextTrashcanId)
+        if (trashcanId != -1) {
+            trashcanIdField.setText(trashcanId.toString()) // Automatically fill the field
+        }
+
+        // Find other views
         val emailEditText = view.findViewById<TextInputEditText>(R.id.editTextEmail)
-        val trashcanIdEditText = view.findViewById<TextInputEditText>(R.id.editTextTrashcanId)
         val descriptionEditText = view.findViewById<TextInputEditText>(R.id.editTextDescription)
         val submitButton = view.findViewById<Button>(R.id.submitButton)
 
         // Handle Submit Button Click
         submitButton.setOnClickListener {
-            val userEmail = emailEditText.text.toString()
-            val trashcanId = trashcanIdEditText.text.toString().toLongOrNull()
-            val description = descriptionEditText.text.toString()
+            val userEmail = emailEditText.text?.toString()?.trim()
+            val trashcanIdInput = trashcanIdField.text?.toString()?.trim()?.toLongOrNull()
+            val description = descriptionEditText.text?.toString()?.trim()
 
-
-            // Validate input
-            if (userEmail.isEmpty() || trashcanId == null || description.isEmpty()) {
-                Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            // Validate input fields
+            if (userEmail.isNullOrEmpty() || trashcanIdInput == null || description.isNullOrEmpty()) {
+                Toast.makeText(context, "Please fill in all fields correctly", Toast.LENGTH_SHORT).show()
             } else {
-                // Change background color to white
-                view.setBackgroundColor(resources.getColor(android.R.color.white, null))
+                // Change background color to white to indicate submission
+                view.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white))
 
                 // Simulate form submission
-                Toast.makeText(context, "Form submitted:\n$userEmail\n$trashcanId\n$description", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    "Form submitted successfully:\nEmail: $userEmail\nTrashcan ID: $trashcanIdInput\nDescription: $description",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

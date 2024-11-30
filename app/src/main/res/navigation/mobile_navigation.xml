@@ -22,4 +22,9 @@
         android:name="com.ecotrack.android.ui.form.FormFragment"
         android:label="@string/title_report"
         tools:layout="@layout/fragment_form" />
+
+    <!-- Action to navigate from MarkerDetailsFragment to FormFragment -->
+    <action
+        android:id="@+id/action_markerDetails_to_formFragment"
+        app:destination="@id/navigation_report" />
 </navigation>

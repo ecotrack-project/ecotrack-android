@@ -1,23 +1,22 @@
 package com.ecotrack.android
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ecotrack.android.databinding.ActivityMainBinding
-import com.ecotrack.android.ui.form.FormFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         // Inflate the layout using ViewBinding
@@ -28,15 +27,31 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         // Set up navigation controller
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.navigation_map,
             R.id.navigation_home
         )) // Define top-level destinations
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-
+        // Handle navigation selection to ensure FormFragment is closed when clicking map
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_map -> {
+                    // Navigate to MapFragment if not already there
+                    if (navController.currentDestination?.id != R.id.navigation_map) {
+                        navController.popBackStack(R.id.navigation_map, false)
+                    }
+                    true
+                }
+                R.id.navigation_home -> {
+                    navController.navigate(R.id.navigation_home)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

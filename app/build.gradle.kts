@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.libs
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -51,12 +53,11 @@ dependencies {
 
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.okhttp)
-
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

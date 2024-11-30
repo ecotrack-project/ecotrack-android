@@ -1,5 +1,6 @@
 package com.ecotrack.android.ui.map
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import retrofit2.Response
 
 
 data class MarkerData(
+    val id: Long,
     val position: LatLng,
     val fillinglevel: Int,
     val trashType: String,
@@ -39,10 +41,11 @@ class MapViewModel : ViewModel() {
     init { // Called when the ViewModel is instantiated
         // Initialize with predefined markers
         _markers.value = listOf(
-            MarkerData(LatLng(37.422131, -122.084801),80, "Plastic"),
-            MarkerData(LatLng(45.464664, 9.188540),90, "Glass"),
-            MarkerData(LatLng(48.856613, 2.352222),10, "Paper"),
+            MarkerData(id = 1L, position = LatLng(37.422131, -122.084801), fillinglevel = 80, trashType = "Plastic"),
+            MarkerData(id = 2L, position = LatLng(45.464664, 9.188540), fillinglevel = 90, trashType = "Glass"),
+            MarkerData(id = 3L, position = LatLng(48.856613, 2.352222), fillinglevel = 10, trashType = "Paper")
         )
+
 
 
     }
@@ -56,6 +59,8 @@ class MapViewModel : ViewModel() {
 
                 if (response.isSuccessful) {
                     val trashcans = response.body()
+                    Log.d("API_SUCCESS", "Response: $trashcans")
+                    println("Response: $trashcans")
 
                     trashcans?.let {
                         _trashcans.value = it // Update LiveData for trashcans with the new data
@@ -63,6 +68,7 @@ class MapViewModel : ViewModel() {
                         // Update markers with trashcan data
                         val trashcanMarkers = it.map { trashcan ->
                             MarkerData(
+                                id = trashcan.id,
                                 position = LatLng(trashcan.latitude, trashcan.longitude),
                                 fillinglevel = trashcan.fillinglevel,
                                 trashType = trashcan.trashType
@@ -73,14 +79,32 @@ class MapViewModel : ViewModel() {
                     }
                 } else {
                     println("Error: ${response.code()} - ${response.message()}")
+                    Log.e("API_ERROR", "Error: ${response.code()} - ${response.message()}")
+
                 }
             }
 
             override fun onFailure(call: Call<List<Trashcan>>, t: Throwable) {
                 println("Failure: ${t.message}")
+                Log.e("API_ERROR", "Failure: ${t.message}")
             }
         })
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     fun updateUserLocation(location: LatLng) {
         _userLocation.value = location

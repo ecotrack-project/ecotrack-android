@@ -6,8 +6,8 @@
     <string name="open_form">Open Form</string>
     <string name="filling_level">Filling Level</string>
     <string name="trash_type">Trash Type</string>
-
-
     <string name="google_maps_api_key">AIzaSyAtuOh5XDmCqPgXIAedccCN70IqODLpL7c</string>
     <string name="map_id">600e2ff7e4ab5610</string>
+    <string name="compute_shortest_path">Find Path</string>
+    <string name="send_report">Send Report</string>
 </resources>

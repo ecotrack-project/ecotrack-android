@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.ecotrack.android.MarkerDetailsFragment
 import com.ecotrack.android.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -42,8 +43,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        GoogleMapOptions()
-            .mapId(resources.getString(R.string.map_id))
+        GoogleMapOptions().mapId(resources.getString(R.string.map_id))
 
 
 
@@ -154,7 +154,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun handleMarkerClick(marker: Marker) {
         val markerData = markerDataMap[marker]
         markerData?.let {
-            val dialogFragment = MarkerDetailsFragment.newInstance(it.trashType, it.fillinglevel)
+            val dialogFragment = MarkerDetailsFragment.newInstance(it.id, it.trashType, it.fillinglevel)
             dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
         }
     }
