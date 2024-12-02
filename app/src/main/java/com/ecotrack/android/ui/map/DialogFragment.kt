@@ -71,7 +71,7 @@ class MarkerDetailsFragment : DialogFragment() {
             mapFragment?.let {
                 it.calculateRoute(latitude, longitude)
             } ?: run {
-                Toast.makeText(requireContext(), "Errore calcolo rotta", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Errore nel calcolo rotta", Toast.LENGTH_SHORT).show()
             }
             dismiss()
         }
