@@ -3,6 +3,8 @@ package com.ecotrack.android.ui.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +15,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.privacysandbox.tools.core.model.Method
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ecotrack.android.MarkerDetailsFragment
@@ -31,8 +32,8 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.android.volley.Request
-import com.android.volley.Response
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Polyline
 import com.google.maps.android.PolyUtil
 import org.json.JSONException
 import org.json.JSONObject
@@ -44,6 +45,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var googleMap: GoogleMap? = null
 
+    // User position
     private var userPos: LatLng? = null
 
 
@@ -107,73 +109,65 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
                 this.userPos = userLatLng
 
-                // Update ViewModel with user location
                 viewModel.updateUserLocation(userLatLng)
 
-                // Center camera on user location
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, DEFAULT_ZOOM_LEVEL))
-            } ?: Toast.makeText(context, "User location unavailable", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(context, "Posizione non disponibile", Toast.LENGTH_SHORT).show()
         }
     }
 
     // Markers
     private val markerDataMap = mutableMapOf<Marker, MarkerData>()
 
+    // Add markers method
     private fun observeMarkers() {
         viewModel.markers.observe(viewLifecycleOwner) { markers ->
-            googleMap?.clear() // Clear existing markers
-            markerDataMap.clear() // Clear existing associations
+            googleMap?.clear()
+            markerDataMap.clear()
 
             markers.forEach { markerData ->
-                val iconColor = when (markerData.trashType) {
-                    "Plastica" -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW) // Blu per Plastica
-                    "Indifferenziato" -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA) // Grigio scuro per Indifferenziato
-                    "Carta" -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE) // Giallo per Carta
-                    "Vetro" -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN) // Verde per Vetro
-                    "Organico" -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE) // Marrone per Organico
-                    else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET) // Viola come colore predefinito
+                val iconUrl = when (markerData.trashType) {
+                    "Plastica" -> R.drawable.plastica
+                    "Indifferenziato" -> R.drawable.indifferenziato
+                    "Carta" -> R.drawable.carta
+                    "Vetro" -> R.drawable.vetro
+                    "Organico" -> R.drawable.organico
+                    else -> R.drawable.indifferenziato
                 }
 
-                // Aggiungi il marker con l'icona corrispondente
+                val originalIcon = BitmapFactory.decodeResource(resources, iconUrl)
+
+                val scaledIcon = Bitmap.createScaledBitmap(originalIcon, 120, 120, false)
+
+                val icon = BitmapDescriptorFactory.fromBitmap(scaledIcon)
+
                 googleMap?.addMarker(
                     MarkerOptions()
                         .position(markerData.position)
                         .title("Tipo: ${markerData.trashType}")
-                        .icon(iconColor) // Usa il colore dell'icona
+                        .icon(icon)
                 )?.let { marker ->
-                    markerDataMap[marker] = markerData // Associa il marker con i suoi dati
+                    markerDataMap[marker] = markerData
                 }
             }
         }
     }
 
+    // Variabile globale per la polilinea
+    private var currentPolyline: Polyline? = null
 
-    // Scaricamento dati rotta da Google Maps
-    fun calculateRoute() {
-        if (markerDataMap.size < 2) return // Se ci sono meno di 2 marker, non possiamo calcolare la rotta
+    fun calculateRoute(latitude: Double?, longitude: Double?) {
 
-        val origin = LatLng(40.832848, 16.553611)  // Esempio di coordinate di origine
-        val destination = LatLng(40.830221, 16.561002)  // Esempio di coordinate di destinazione
+        val origin = userPos?.let { LatLng(it.latitude, it.longitude) }
 
+        // Google Maps API
+        val apiKey = resources.getString(R.string.google_maps_api_key)
 
-        // Prepara i waypoints
-        // Prepara i waypoints escludendo il primo e l'ultimo MarkerData dalla mappa
-        val waypoints = markerDataMap.values
-            .drop(1)  // Rimuove il primo MarkerData
-            .dropLast(1)  // Rimuove l'ultimo MarkerData
-            .joinToString("|") {
-                "${it.position.latitude},${it.position.longitude}"  // Formatta latitudine e longitudine
-            }
-
-
-        // URL per la richiesta della rotta
-        val apiKey=resources.getString(R.string.google_maps_api_key)
         val url = "https://maps.googleapis.com/maps/api/directions/json?origin=${origin?.latitude},${origin?.longitude}" +
-                "&destination=${destination.latitude},${destination?.longitude}" +
-                "&waypoints=optimize:true|$waypoints" +
+                "&destination=${latitude},${longitude}" +
                 "&key=$apiKey"
 
-        // Esegui la richiesta
+        // Request
         val requestQueue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.GET, url,
@@ -183,18 +177,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             { _ ->
                 Toast.makeText(context, "Errore nel calcolo della rotta", Toast.LENGTH_SHORT).show()
             })
-
         requestQueue.add(request)
     }
 
-
-    // PARSE METHOD
+    // Parse route
     private fun parseDirectionsResponse(response: String) {
         try {
             val jsonObject = JSONObject(response)
             val status = jsonObject.getString("status")
             if (status != "OK") {
-                Log.e("DirectionsAPI", "Errore nella risposta: $status")
                 Toast.makeText(context, "Errore nel calcolo della rotta: $status", Toast.LENGTH_SHORT).show()
                 return
             }
@@ -203,40 +194,32 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val routes = jsonObject.getJSONArray("routes")
             if (routes.length() > 0) {
                 val route = routes.getJSONObject(0)
-
-                // Estrai la polyline
                 val polyline = route.getJSONObject("overview_polyline").getString("points")
-
-                // Log per vedere la polyline prima della decodifica
-                Log.d("Polyline", "Polyline string: $polyline")
-
-                // Decodifica la polyline in una lista di LatLng
                 val decodedPath = PolyUtil.decode(polyline)
 
-                // Log per vedere il percorso decodificato
-                Log.d("DecodedPolyline", "Decoded path: $decodedPath")
+                // Remove previous
+                currentPolyline?.remove()
 
-                // Aggiungi la polilinea alla mappa
+                // Add new
                 val polylineOptions = PolylineOptions().addAll(decodedPath).color(Color.BLUE).width(10f)
-                googleMap?.addPolyline(polylineOptions)
+                currentPolyline = googleMap?.addPolyline(polylineOptions)
 
-                // (Opzionale) Aggiorna la visualizzazione della mappa per includere l'intero percorso
-                val bounds = LatLngBounds.builder()
-                for (latLng in decodedPath) {
-                    bounds.include(latLng)
-                }
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
+                //userPos?.let { moveCameraToUserPosition(it) };
 
             } else {
                 Toast.makeText(context, "Nessuna rotta trovata", Toast.LENGTH_SHORT).show()
             }
         } catch (e: JSONException) {
             e.printStackTrace()
-            Toast.makeText(context, "Errore nel parsing della risposta", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Errore nell'analisi della risposta", Toast.LENGTH_SHORT).show()
         }
     }
 
-
+    // Move camera on user
+    private fun moveCameraToUserPosition(position: LatLng) {
+        val zoomLevel = 15f
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoomLevel))
+    }
 
     // Marker view
     private fun observeTrashcans() {
@@ -258,6 +241,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     // Position
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE &&
             grantResults.isNotEmpty() &&
@@ -273,7 +257,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun handleMarkerClick(marker: Marker) {
         val markerData = markerDataMap[marker]
         markerData?.let {
-            val dialogFragment = MarkerDetailsFragment.newInstance(it.id, it.trashType, it.fillinglevel)
+            val dialogFragment = MarkerDetailsFragment.newInstance(
+                it.id, it.trashType, it.fillinglevel, it.position.latitude, it.position.longitude
+            )
             dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
         }
     }

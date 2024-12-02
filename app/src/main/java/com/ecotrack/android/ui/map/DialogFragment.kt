@@ -1,7 +1,6 @@
 package com.ecotrack.android
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,21 +10,24 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
-import com.ecotrack.android.R
 import com.ecotrack.android.ui.map.MapFragment
 
 class MarkerDetailsFragment : DialogFragment() {
     private var trashcanId: Long? = null // Updated to Long
     private var trashType: String? = null
     private var fillinglevel: Int? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     companion object {
-        fun newInstance(trashcanId: Long, trashType: String, fillinglevel: Int): MarkerDetailsFragment {
+        fun newInstance(trashcanId: Long, trashType: String, fillinglevel: Int, latitude: Double, longitude: Double): MarkerDetailsFragment {
             val fragment = MarkerDetailsFragment()
             val args = Bundle()
             args.putLong("trashcanId", trashcanId)
             args.putString("trashType", trashType)
             args.putInt("fillinglevel", fillinglevel)
+            args.putDouble("latitude", latitude)
+            args.putDouble("longitude", longitude)
             fragment.arguments = args
             return fragment
         }
@@ -37,6 +39,8 @@ class MarkerDetailsFragment : DialogFragment() {
         trashcanId = arguments?.getLong("trashcanId", -1L)
         trashType = arguments?.getString("trashType")
         fillinglevel = arguments?.getInt("fillinglevel")
+        latitude = arguments?.getDouble("latitude")
+        longitude = arguments?.getDouble("longitude")
         setStyle(STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar)
     }
 
@@ -60,30 +64,25 @@ class MarkerDetailsFragment : DialogFragment() {
             dismiss()
         }
 
+        // Import method from Fragment
         findPathButton.setOnClickListener {
-            // Trova tutti i Fragment attivi
             val fragments = parentFragmentManager.fragments
-
-            // Trova il MapFragment tra i Fragment caricati
             val mapFragment = fragments.find { it is MapFragment } as? MapFragment
-
-            // Se MapFragment è stato trovato, chiama calculateRoute()
             mapFragment?.let {
-                it.calculateRoute()
-                Toast.makeText(requireContext(), "SIIIII", Toast.LENGTH_SHORT).show()
+                it.calculateRoute(latitude, longitude)
             } ?: run {
-                Toast.makeText(requireContext(), "OH MERDA", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Errore calcolo rotta", Toast.LENGTH_SHORT).show()
             }
-
+            dismiss()
         }
 
+        // Send report method
         sendReportButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putLong("trashcanId", trashcanId ?: -1L) // Ensure correct Long type
             findNavController().navigate(R.id.action_markerDetails_to_formFragment, bundle)
             dismiss()
         }
-
         return view
     }
 

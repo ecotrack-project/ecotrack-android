@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_dialog_background"
+    android:outlineAmbientShadowColor="?colorOnSecondary"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:ignore="UnusedAttribute">
 
     <ImageView
         android:id="@+id/closeButton"
@@ -20,7 +22,7 @@
         android:ellipsize="none"
         android:singleLine="false"
         android:text="@string/trash_type"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSecondary"
         android:textSize="18sp" />
 
     <TextView
@@ -30,7 +32,7 @@
         android:ellipsize="none"
         android:singleLine="false"
         android:text="@string/filling_level"
-        android:textColor="@android:color/black"
+        android:textColor="?colorOnSecondary"
         android:textSize="16sp" />
 
     <!-- Add buttons below -->

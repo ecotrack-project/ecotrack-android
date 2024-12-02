@@ -36,7 +36,7 @@ class MapViewModel : ViewModel() {
 
     init { // Called when the ViewModel is instantiated
         // Initialize with markers from JSON data
-        _markers.value = listOf(
+        /* _markers.value = listOf(
             MarkerData(id = 1L, position = LatLng(40.832848, 16.553611), fillinglevel = 95, trashType = "Plastica"),
             MarkerData(id = 2L, position = LatLng(40.828100, 16.552340), fillinglevel = 82, trashType = "Plastica"),
             MarkerData(id = 3L, position = LatLng(40.834063, 16.558287), fillinglevel = 63, trashType = "Plastica"),
@@ -57,8 +57,63 @@ class MapViewModel : ViewModel() {
             MarkerData(id = 18L, position = LatLng(40.829990, 16.547665), fillinglevel = 91, trashType = "Vetro"),
             MarkerData(id = 19L, position = LatLng(40.827181, 16.551278), fillinglevel = 58, trashType = "Vetro"),
             MarkerData(id = 20L, position = LatLng(40.835482, 16.551016), fillinglevel = 44, trashType = "Vetro")
+        ) */
+
+        _markers.value = listOf(
+            MarkerData(id = 1L, position = LatLng(41.127926, 16.868977), fillinglevel = 95, trashType = "Plastica"),
+            MarkerData(id = 2L, position = LatLng(41.123071, 16.869212), fillinglevel = 96, trashType = "Indifferenziato"),
+            MarkerData(id = 3L, position = LatLng(41.120623, 16.881238), fillinglevel = 1, trashType = "Indifferenziato"),
+            MarkerData(id = 4L, position = LatLng(41.125815, 16.868476), fillinglevel = 52, trashType = "Organico"),
+            MarkerData(id = 5L, position = LatLng(41.126213, 16.868761), fillinglevel = 36, trashType = "Indifferenziato"),
+            MarkerData(id = 6L, position = LatLng(41.121903, 16.871047), fillinglevel = 85, trashType = "Carta"),
+            MarkerData(id = 7L, position = LatLng(41.122867, 16.868237), fillinglevel = 75, trashType = "Organico"),
+            MarkerData(id = 8L, position = LatLng(41.120284, 16.868928), fillinglevel = 27, trashType = "Plastica"),
+            MarkerData(id = 9L, position = LatLng(41.119913, 16.870988), fillinglevel = 39, trashType = "Plastica"),
+            MarkerData(id = 10L, position = LatLng(41.121271, 16.866236), fillinglevel = 98, trashType = "Indifferenziato"),
+            MarkerData(id = 11L, position = LatLng(41.119115, 16.870485), fillinglevel = 12, trashType = "Indifferenziato"),
+            MarkerData(id = 12L, position = LatLng(41.120729, 16.870108), fillinglevel = 83, trashType = "Carta"),
+            MarkerData(id = 13L, position = LatLng(41.117713, 16.868461), fillinglevel = 43, trashType = "Organico"),
+            MarkerData(id = 14L, position = LatLng(41.115673, 16.872461), fillinglevel = 79, trashType = "Carta"),
+            MarkerData(id = 15L, position = LatLng(41.118763, 16.875461), fillinglevel = 25, trashType = "Indifferenziato"),
+            MarkerData(id = 16L, position = LatLng(41.121267, 16.873248), fillinglevel = 12, trashType = "Plastica"),
+            MarkerData(id = 17L, position = LatLng(41.122361, 16.874831), fillinglevel = 15, trashType = "Carta"),
+            MarkerData(id = 18L, position = LatLng(41.118465, 16.870159), fillinglevel = 56, trashType = "Indifferenziato"),
+            MarkerData(id = 19L, position = LatLng(41.116589, 16.870384), fillinglevel = 42, trashType = "Vetro"),
+            MarkerData(id = 20L, position = LatLng(41.120261, 16.876829), fillinglevel = 35, trashType = "Carta"),
+            MarkerData(id = 21L, position = LatLng(41.123728, 16.870413), fillinglevel = 93, trashType = "Indifferenziato"),
+            MarkerData(id = 22L, position = LatLng(41.120062, 16.866728), fillinglevel = 85, trashType = "Organico"),
+            MarkerData(id = 23L, position = LatLng(41.116978, 16.867381), fillinglevel = 88, trashType = "Plastica"),
+            MarkerData(id = 24L, position = LatLng(41.118932, 16.869842), fillinglevel = 29, trashType = "Indifferenziato"),
+            MarkerData(id = 25L, position = LatLng(41.125111, 16.874581), fillinglevel = 44, trashType = "Organico"),
+            MarkerData(id = 26L, position = LatLng(41.119832, 16.871041), fillinglevel = 22, trashType = "Carta"),
+            MarkerData(id = 27L, position = LatLng(41.117895, 16.874335), fillinglevel = 32, trashType = "Carta"),
+            MarkerData(id = 28L, position = LatLng(41.121587, 16.877171), fillinglevel = 13, trashType = "Indifferenziato"),
+            MarkerData(id = 29L, position = LatLng(41.122893, 16.878297), fillinglevel = 56, trashType = "Organico"),
+            MarkerData(id = 30L, position = LatLng(41.118682, 16.868471), fillinglevel = 38, trashType = "Carta"),
+            MarkerData(id = 31L, position = LatLng(41.117465, 16.869872), fillinglevel = 88, trashType = "Plastica"),
+            MarkerData(id = 32L, position = LatLng(41.119867, 16.875831), fillinglevel = 50, trashType = "Plastica"),
+            MarkerData(id = 33L, position = LatLng(41.123116, 16.871542), fillinglevel = 49, trashType = "Plastica"),
+            MarkerData(id = 34L, position = LatLng(41.121413, 16.866913), fillinglevel = 74, trashType = "Carta"),
+            MarkerData(id = 35L, position = LatLng(41.116911, 16.871763), fillinglevel = 0, trashType = "Plastica"),
+            MarkerData(id = 36L, position = LatLng(41.120348, 16.870118), fillinglevel = 30, trashType = "Indifferenziato"),
+            MarkerData(id = 37L, position = LatLng(41.118231, 16.871227), fillinglevel = 22, trashType = "Carta"),
+            MarkerData(id = 38L, position = LatLng(41.117846, 16.873945), fillinglevel = 96, trashType = "Plastica"),
+            MarkerData(id = 39L, position = LatLng(41.115876, 16.869817), fillinglevel = 66, trashType = "Indifferenziato"),
+            MarkerData(id = 40L, position = LatLng(41.119648, 16.868372), fillinglevel = 56, trashType = "Vetro"),
+            MarkerData(id = 41L, position = LatLng(41.121278, 16.870935), fillinglevel = 32, trashType = "Vetro"),
+            MarkerData(id = 42L, position = LatLng(41.118763, 16.872563), fillinglevel = 36, trashType = "Vetro"),
+            MarkerData(id = 43L, position = LatLng(41.124012, 16.869572), fillinglevel = 93, trashType = "Carta"),
+            MarkerData(id = 44L, position = LatLng(41.125372, 16.868972), fillinglevel = 36, trashType = "Organico"),
+            MarkerData(id = 45L, position = LatLng(41.116972, 16.873572), fillinglevel = 80, trashType = "Indifferenziato"),
+            MarkerData(id = 46L, position = LatLng(41.120285, 16.869261), fillinglevel = 16, trashType = "Indifferenziato"),
+            MarkerData(id = 47L, position = LatLng(41.122847, 16.872361), fillinglevel = 77, trashType = "Carta"),
+            MarkerData(id = 48L, position = LatLng(41.118749, 16.874972), fillinglevel = 40, trashType = "Organico"),
+            MarkerData(id = 49L, position = LatLng(41.123186, 16.875461), fillinglevel = 14, trashType = "Indifferenziato"),
+            MarkerData(id = 50L, position = LatLng(41.119483, 16.871983), fillinglevel = 19, trashType = "Carta")
         )
+
     }
+
 
 
     fun loadTrashcans() {
