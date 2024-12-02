@@ -1,5 +1,6 @@
 package com.ecotrack.android
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -13,11 +14,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+
+    companion object {
+        private lateinit var instance: MainActivity
+
+        fun getAppContext(): Context {
+            return instance.applicationContext
+        }
+    }
+
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
 
         // Inflate the layout using ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)

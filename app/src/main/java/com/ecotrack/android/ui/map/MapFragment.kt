@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ecotrack.android.MarkerDetailsFragment
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.maps.android.PolyUtil
 import org.json.JSONException
 import org.json.JSONObject
+
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -91,10 +93,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             true // Return true to consume the event
         }
 
+        // Trigger data loading in ViewModel
+        viewModel.loadTrashcans()
+
+
         // Observe ViewModel data for markers and trashcans
         observeMarkers()
         observeTrashcans()
-
     }
 
     @SuppressLint("MissingPermission")
@@ -236,8 +241,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        // Trigger data loading in ViewModel
-        viewModel.loadTrashcans()
+
     }
 
     // Position
@@ -263,6 +267,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
         }
     }
+
+
 
     // Default methods for lifecycle of MapView
     override fun onResume() {

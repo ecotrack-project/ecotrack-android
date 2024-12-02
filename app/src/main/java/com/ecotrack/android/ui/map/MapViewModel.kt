@@ -1,9 +1,11 @@
 package com.ecotrack.android.ui.map
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ecotrack.android.MainActivity
 import com.google.android.gms.maps.model.LatLng
 import com.ecotrack.android.services.RetrofitClient
 import model.Trashcan
@@ -117,6 +119,13 @@ class MapViewModel : ViewModel() {
 
 
     fun loadTrashcans() {
+
+
+        val appContext = MainActivity.getAppContext() // Retrieve the application context
+
+        // Show a toast to indicate the start of the API call
+        Toast.makeText(appContext, "Loading trashcans...", Toast.LENGTH_SHORT).show()
+
         val apiService = RetrofitClient.instance // Instance of the Retrofit service interface TrashcanService
         apiService.getAllTrashcans().enqueue(object : Callback<List<Trashcan>> {
 
@@ -125,7 +134,7 @@ class MapViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val trashcans = response.body()
                     Log.d("API_SUCCESS", "Response: $trashcans")
-                    println("Response: $trashcans")
+
 
                     trashcans?.let {
                         _trashcans.value = it // Update LiveData for trashcans with the new data
@@ -140,21 +149,33 @@ class MapViewModel : ViewModel() {
                             )
                         }
 
-                        _markers.value = trashcanMarkers // We update the markers with the new trashcan data
+                        _markers.value = trashcanMarkers // Update the markers with the new trashcan data
                     }
-                } else {
-                    println("Error: ${response.code()} - ${response.message()}")
-                    Log.e("API_ERROR", "Error: ${response.code()} - ${response.message()}")
 
+                    // Show a toast to indicate successful data retrieval
+                    Toast.makeText(appContext, "Trashcans loaded successfully!", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    val errorMessage = "Error: ${response.code()} - ${response.message()}"
+                    Log.e("API_ERROR", errorMessage)
+
+                    // Show a toast to indicate an error occurred
+                    Toast.makeText(appContext, "Failed to load trashcans: $errorMessage", Toast.LENGTH_LONG).show()
                 }
             }
 
+
+
             override fun onFailure(call: Call<List<Trashcan>>, t: Throwable) {
-                println("Failure: ${t.message}")
-                Log.e("API_ERROR", "Failure: ${t.message}")
+                val failureMessage = "Failure: ${t.message}"
+                Log.e("API_ERROR", failureMessage)
+
+                // Show a toast to indicate a failure
+                Toast.makeText(appContext, "Error loading trashcans: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
+
 
     // Update user location
     fun updateUserLocation(location: LatLng) {
