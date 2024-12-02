@@ -8,7 +8,6 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:mapId="@string/map_id"

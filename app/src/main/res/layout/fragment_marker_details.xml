@@ -44,7 +44,7 @@
         <Button
             android:id="@+id/find_path"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:text="@string/compute_shortest_path"
@@ -54,11 +54,11 @@
         <Button
             android:id="@+id/send_report"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:text="@string/send_report"
-            android:backgroundTint="@color/design_default_color_secondary"
+            android:backgroundTint="@color/blue_700"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

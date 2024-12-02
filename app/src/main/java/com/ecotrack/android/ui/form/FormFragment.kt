@@ -24,7 +24,7 @@ class FormFragment : Fragment(R.layout.fragment_form) {
         // Find other views
         val emailEditText = view.findViewById<TextInputEditText>(R.id.editTextEmail)
         val descriptionEditText = view.findViewById<TextInputEditText>(R.id.editTextDescription)
-        val submitButton = view.findViewById<Button>(R.id.submitButton)
+        val submitButton = view.findViewById<Button>(R.id.submit_button)
 
         // Handle Submit Button Click
         submitButton.setOnClickListener {

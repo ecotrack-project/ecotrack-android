@@ -1,6 +1,7 @@
 package com.ecotrack.android
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.ecotrack.android.R
+import com.ecotrack.android.ui.map.MapFragment
 
 class MarkerDetailsFragment : DialogFragment() {
     private var trashcanId: Long? = null // Updated to Long
@@ -52,14 +54,27 @@ class MarkerDetailsFragment : DialogFragment() {
         val sendReportButton: Button = view.findViewById(R.id.send_report)
 
         trashTypeTextView.text = trashType
-        fillingLevelTextView.text = "Filling Level: $fillinglevel%"
+        fillingLevelTextView.text = "Livello di riempimento: $fillinglevel%"
 
         closeButton.setOnClickListener {
             dismiss()
         }
 
         findPathButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Find Path button clicked", Toast.LENGTH_SHORT).show()
+            // Trova tutti i Fragment attivi
+            val fragments = parentFragmentManager.fragments
+
+            // Trova il MapFragment tra i Fragment caricati
+            val mapFragment = fragments.find { it is MapFragment } as? MapFragment
+
+            // Se MapFragment è stato trovato, chiama calculateRoute()
+            mapFragment?.let {
+                it.calculateRoute()
+                Toast.makeText(requireContext(), "SIIIII", Toast.LENGTH_SHORT).show()
+            } ?: run {
+                Toast.makeText(requireContext(), "OH MERDA", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         sendReportButton.setOnClickListener {

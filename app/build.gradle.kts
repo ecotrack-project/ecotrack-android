@@ -53,10 +53,15 @@ dependencies {
 
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation(libs.google.maps.services)
+    implementation(libs.android.maps.utils)
+
 
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.okhttp)
+    implementation(libs.volley)
+    implementation(libs.androidx.tools.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

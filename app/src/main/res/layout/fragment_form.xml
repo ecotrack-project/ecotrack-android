@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -10,30 +11,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Email Field -->
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="61dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="316dp"
-            android:layout_marginTop="2dp"
-            android:layout_weight="2"
-            android:backgroundTint="#FF0000"
-            android:backgroundTintMode="multiply"
-            app:icon="@android:drawable/ic_menu_close_clear_cancel"
-            app:iconPadding="0dp"
-            app:iconTint="#FFFFFF"
-            app:iconTintMode="multiply"
-            app:strokeColor="#FFFFFF"
-            android:text="x" />
-
-
+        <!-- E-mail field -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email">
-
+            android:hint="@string/email">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
@@ -48,22 +30,19 @@
             android:layout_height="wrap_content"
             android:hint="Trashcan ID"
             android:layout_marginTop="16dp">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextTrashcanId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Description Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
+            android:hint="@string/description"
             android:layout_marginTop="16dp">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextDescription"
                 android:layout_width="match_parent"
@@ -73,12 +52,22 @@
                 android:gravity="top|start" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Submit Button -->
+        <!-- Button Section -->
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/submit_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="24dp"
-            android:text="Submit" />
+            android:text="@string/submit_button"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/blue_500" />
+
+        <Button
+            android:id="@+id/abort_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/abort_button"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/red_700" />
     </LinearLayout>
 </ScrollView>
