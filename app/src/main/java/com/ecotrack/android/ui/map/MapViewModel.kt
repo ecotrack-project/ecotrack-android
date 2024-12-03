@@ -9,6 +9,7 @@ import com.ecotrack.android.MainActivity
 import com.google.android.gms.maps.model.LatLng
 import com.ecotrack.android.services.RetrofitClient
 import model.Trashcan
+import model.TrashcanApiResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -119,32 +120,29 @@ class MapViewModel : ViewModel() {
 
 
     fun loadTrashcans() {
-
-
         val appContext = MainActivity.getAppContext() // Retrieve the application context
 
         // Show a toast to indicate the start of the API call
         Toast.makeText(appContext, "Loading trashcans...", Toast.LENGTH_SHORT).show()
 
         val apiService = RetrofitClient.instance // Instance of the Retrofit service interface TrashcanService
-        apiService.getAllTrashcans().enqueue(object : Callback<List<Trashcan>> {
+        apiService.getAllTrashcans().enqueue(object : Callback<TrashcanApiResponse> {
 
-            override fun onResponse(call: Call<List<Trashcan>>, response: Response<List<Trashcan>>) {
-
+            override fun onResponse(call: Call<TrashcanApiResponse>, response: Response<TrashcanApiResponse>) {
                 if (response.isSuccessful) {
-                    val trashcans = response.body()
-                    Log.d("API_SUCCESS", "Response: $trashcans")
-
+                    val trashcanApiResponse = response.body()
+                    val trashcans = trashcanApiResponse?.response // Access the "response" field
+                    Log.d("API_SUCCESS", "Trashcans: $trashcans")
 
                     trashcans?.let {
-                        _trashcans.value = it // Update LiveData for trashcans with the new data
+                        _trashcans.value = it // Update LiveData for trashcans
 
                         // Update markers with trashcan data
                         val trashcanMarkers = it.map { trashcan ->
                             MarkerData(
                                 id = trashcan.id,
                                 position = LatLng(trashcan.latitude, trashcan.longitude),
-                                fillinglevel = trashcan.fillinglevel,
+                                fillinglevel = trashcan.fillingLevel,
                                 trashType = trashcan.trashType
                             )
                         }
@@ -164,9 +162,7 @@ class MapViewModel : ViewModel() {
                 }
             }
 
-
-
-            override fun onFailure(call: Call<List<Trashcan>>, t: Throwable) {
+            override fun onFailure(call: Call<TrashcanApiResponse>, t: Throwable) {
                 val failureMessage = "Failure: ${t.message}"
                 Log.e("API_ERROR", failureMessage)
 
@@ -175,6 +171,7 @@ class MapViewModel : ViewModel() {
             }
         })
     }
+
 
 
     // Update user location

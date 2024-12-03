@@ -1,11 +1,16 @@
 package model
 
-data class Trashcan (
+
+data class TrashcanApiResponse(
+    val response: List<Trashcan>,
+    val errorRTO: String? // To handle the optional "errorRTO" field
+)
+
+data class Trashcan(
     val id: Long,
     val latitude: Double,
     val longitude: Double,
-    val fillinglevel : Int,
+    val fillingLevel: Int,
     val batteryLevel: Int,
-    val trashType: String,
-
+    val trashType: String
 )
