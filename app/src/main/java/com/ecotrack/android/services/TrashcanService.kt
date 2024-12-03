@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface TrashcanService {
 
-    @GET("/api/trashcans")
+    @GET("/trashcan/list")
     fun getAllTrashcans(): Call<TrashcanApiResponse>
 
 

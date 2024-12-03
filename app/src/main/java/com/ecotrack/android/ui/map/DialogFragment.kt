@@ -68,7 +68,7 @@ class MarkerDetailsFragment : DialogFragment() {
         findPathButton.setOnClickListener {
             val fragments = parentFragmentManager.fragments
             val mapFragment = fragments.find { it is MapFragment } as? MapFragment
-            mapFragment?.let { it.calculateRoute(latitude, longitude) } ?: run {
+            mapFragment?.calculateRoute(latitude, longitude) ?: run {
                 Toast.makeText(requireContext(), "Errore nel calcolo rotta", Toast.LENGTH_SHORT).show()
             }
             dismiss()

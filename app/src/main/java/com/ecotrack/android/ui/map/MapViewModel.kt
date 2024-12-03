@@ -37,7 +37,9 @@ class MapViewModel : ViewModel() {
     val trashcans: LiveData<List<Trashcan>> get() = _trashcans
 
 
-    init { // Called when the ViewModel is instantiated
+    init {
+
+        // Called when the ViewModel is instantiated
         // Initialize with markers from JSON data
         /* _markers.value = listOf(
             MarkerData(id = 1L, position = LatLng(40.832848, 16.553611), fillinglevel = 95, trashType = "Plastica"),
@@ -138,16 +140,9 @@ class MapViewModel : ViewModel() {
                         _trashcans.value = it // Update LiveData for trashcans
 
                         // Update markers with trashcan data
-                        val trashcanMarkers = it.map { trashcan ->
-                            MarkerData(
-                                id = trashcan.id,
-                                position = LatLng(trashcan.latitude, trashcan.longitude),
-                                fillinglevel = trashcan.fillingLevel,
-                                trashType = trashcan.trashType
-                            )
-                        }
-
+                        val trashcanMarkers = listOf(*it.map { trashcan -> MarkerData(id = trashcan.id, position = LatLng(trashcan.latitude, trashcan.longitude),  fillinglevel = trashcan.fillingLevel, trashType = trashcan.trashType) }.toTypedArray())
                         _markers.value = trashcanMarkers // Update the markers with the new trashcan data
+
                     }
 
                     // Show a toast to indicate successful data retrieval

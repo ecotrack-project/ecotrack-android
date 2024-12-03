@@ -88,8 +88,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         // Set the OnMarkerClickListener
-        googleMap?.setOnMarkerClickListener { marker ->
-            handleMarkerClick(marker)
+        googleMap?.setOnMarkerClickListener { marker -> handleMarkerClick(marker)
             true // Return true to consume the event
         }
 
@@ -147,16 +146,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val icon = BitmapDescriptorFactory.fromBitmap(scaledIcon)
 
                 googleMap?.addMarker(
-                    MarkerOptions()
-                        .position(markerData.position)
-                        .title("Tipo: ${markerData.trashType}")
-                        .icon(icon)
-                )?.let { marker ->
+                    MarkerOptions().position(markerData.position).title("Tipo: ${markerData.trashType}").icon(icon))?.let { marker ->
                     markerDataMap[marker] = markerData
                 }
             }
         }
     }
+
+
+    // Marker view
+    private fun observeTrashcans() {
+        // Observe trashcan data from ViewModel
+        viewModel.trashcans.observe(viewLifecycleOwner) { trashcans ->
+            trashcans.forEach { trashcan ->
+                // Add a marker for each trashcan
+                val position = LatLng(trashcan.latitude, trashcan.longitude)
+                googleMap?.addMarker(MarkerOptions().position(position).title("Trashcan ID: ${trashcan.id}"))
+            }
+        }
+    }
+
+
+
 
     // Variabile globale per la polilinea
     private var currentPolyline: Polyline? = null
@@ -226,23 +237,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoomLevel))
     }
 
-    // Marker view
-    private fun observeTrashcans() {
-        // Observe trashcan data from ViewModel
-        viewModel.trashcans.observe(viewLifecycleOwner) { trashcans ->
-            trashcans.forEach { trashcan ->
-                // Add a marker for each trashcan
-                val position = LatLng(trashcan.latitude, trashcan.longitude)
-                googleMap?.addMarker(
-                    MarkerOptions()
-                        .position(position)
-                        .title("Trashcan ID: ${trashcan.id}")
-                )
-            }
-        }
 
 
-    }
+
+
+
 
     // Position
     @Deprecated("Deprecated in Java")
@@ -267,6 +266,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
         }
     }
+
+
 
 
 
