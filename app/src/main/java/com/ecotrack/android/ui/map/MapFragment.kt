@@ -95,10 +95,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Trigger data loading in ViewModel
         viewModel.loadTrashcans()
 
-
+        //observeTrashcans()
         // Observe ViewModel data for markers and trashcans
         observeMarkers()
-        observeTrashcans()
+
     }
 
     @SuppressLint("MissingPermission")
@@ -109,7 +109,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Move the camera to the user's location if available
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
-                val userLatLng = LatLng(it.latitude, it.longitude)
+                //val userLatLng = LatLng(it.latitude, it.longitude)
+                val userLatLng = LatLng(45.06365, 7.66030)
 
                 this.userPos = userLatLng
 

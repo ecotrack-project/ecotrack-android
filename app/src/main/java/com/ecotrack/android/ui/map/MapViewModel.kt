@@ -64,7 +64,7 @@ class MapViewModel : ViewModel() {
             MarkerData(id = 20L, position = LatLng(40.835482, 16.551016), fillinglevel = 44, trashType = "Vetro")
         ) */
 
-        _markers.value = listOf(
+       /* _markers.value = listOf(
             MarkerData(id = 1L, position = LatLng(41.127926, 16.868977), fillinglevel = 95, trashType = "Plastica"),
             MarkerData(id = 2L, position = LatLng(41.123071, 16.869212), fillinglevel = 96, trashType = "Indifferenziato"),
             MarkerData(id = 3L, position = LatLng(41.120623, 16.881238), fillinglevel = 1, trashType = "Indifferenziato"),
@@ -115,7 +115,8 @@ class MapViewModel : ViewModel() {
             MarkerData(id = 48L, position = LatLng(41.118749, 16.874972), fillinglevel = 40, trashType = "Organico"),
             MarkerData(id = 49L, position = LatLng(41.123186, 16.875461), fillinglevel = 14, trashType = "Indifferenziato"),
             MarkerData(id = 50L, position = LatLng(41.119483, 16.871983), fillinglevel = 19, trashType = "Carta")
-        )
+        )*/
+
 
     }
 
