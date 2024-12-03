@@ -2,7 +2,7 @@ package model
 
 
 data class TrashcanApiResponse(
-    val response: List<Trashcan>,
+    val response: Report,
     val errorRTO: String? // To handle the optional "errorRTO" field
 )
 
