@@ -4,37 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white"
+    tools:context=".ui.form.FormFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- E-mail field -->
+        <!-- E-mail Field -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email">
+            android:hint="@string/email"
+            android:layout_marginBottom="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-
+                android:inputType="textEmailAddress"
+                android:importantForAccessibility="yes" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Trashcan ID Field -->
+        <!-- Trashcan ID Field (Read-Only) -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Trashcan ID"
-            android:layout_marginTop="16dp">
+            android:hint="@string/trashcan_id"
+            android:layout_marginBottom="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextTrashcanId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:enabled="false"
+                android:importantForAccessibility="yes" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Description Field -->
@@ -42,32 +47,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
-            android:layout_marginTop="16dp">
+            android:layout_marginBottom="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
                 android:inputType="textMultiLine"
-                android:gravity="top|start" />
+                android:gravity="top|start"
+                android:importantForAccessibility="yes" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Button Section -->
+        <!-- Submit Button -->
         <Button
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/submit_button"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/blue_500" />
+            android:backgroundTint="@color/blue_500"
+            android:importantForAccessibility="yes" />
 
+        <!-- Abort Button -->
         <Button
             android:id="@+id/abort_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="48dp"
             android:text="@string/abort_button"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/red_700" />
+            android:backgroundTint="@color/red_700"
+            android:importantForAccessibility="yes" />
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when disabled -->
+    <item android:state_enabled="false" android:color="@android:color/darker_gray">
+        <color android:color="#9E9E9E" /> <!-- Light grey for disabled text -->
+    </item>
+    <!-- Default state -->
+    <item android:color="@color/cardview_dark_background">
+        <color android:color="#212121" /> <!-- Dark grey for primary text -->
+    </item>
+</selector>

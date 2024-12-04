@@ -8,43 +8,65 @@ import com.ecotrack.android.R
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 
 class FormFragment : Fragment(R.layout.fragment_form) {
+
+    private lateinit var formViewModel: FormViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve the trashcan ID from arguments and fill the field if available
-        val trashcanId = arguments?.getInt("trashcanId", -1) // Default to -1 if not passed
+        // Initialize ViewModel
+        formViewModel = ViewModelProvider(this).get(FormViewModel::class.java)
+
+        // Retrieve the trashcan ID passed as an argument
+        val trashcanId = arguments?.getString("trashcanId") // Ensure it matches the argument type
         val trashcanIdField: TextInputEditText = view.findViewById(R.id.editTextTrashcanId)
-        if (trashcanId != -1) {
-            trashcanIdField.setText(trashcanId.toString()) // Automatically fill the field
+        trashcanId?.let {
+            trashcanIdField.setText(it) // Automatically fill the field if ID is present
+            trashcanIdField.isEnabled = false // Prevent editing of the ID field
         }
 
-        // Find other views
+        // Find input fields and button
         val emailEditText = view.findViewById<TextInputEditText>(R.id.editTextEmail)
         val descriptionEditText = view.findViewById<TextInputEditText>(R.id.editTextDescription)
         val submitButton = view.findViewById<Button>(R.id.submit_button)
 
-        // Handle Submit Button Click
+        // Set up submit button click listener
         submitButton.setOnClickListener {
             val userEmail = emailEditText.text?.toString()?.trim()
-            val trashcanIdInput = trashcanIdField.text?.toString()?.trim()?.toLongOrNull()
             val description = descriptionEditText.text?.toString()?.trim()
 
             // Validate input fields
-            if (userEmail.isNullOrEmpty() || trashcanIdInput == null || description.isNullOrEmpty()) {
+            if (userEmail.isNullOrEmpty() || description.isNullOrEmpty()) {
                 Toast.makeText(context, "Please fill in all fields correctly", Toast.LENGTH_SHORT).show()
             } else {
-                // Change background color to white to indicate submission
-                view.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+                // Submit the form data using ViewModel
+                submitForm(trashcanId ?: "", userEmail, description)
+            }
+        }
+    }
 
-                // Simulate form submission
-                Toast.makeText(
-                    context,
-                    "Form submitted successfully:\nEmail: $userEmail\nTrashcan ID: $trashcanIdInput\nDescription: $description",
-                    Toast.LENGTH_LONG
-                ).show()
+    /**
+     * Submit the form data using the ViewModel.
+     */
+    private fun submitForm(trashcanId: String, email: String, description: String) {
+        formViewModel.submitForm(trashcanId, email, description)
+
+        // Observe submission status
+        formViewModel.formSubmissionStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                is FormSubmissionStatus.Success -> {
+                    Toast.makeText(context, "Form submitted successfully!", Toast.LENGTH_SHORT).show()
+                    // Optionally navigate back or reset the form
+                }
+                is FormSubmissionStatus.Error -> {
+                    Toast.makeText(context, "Submission failed: ${status.message}", Toast.LENGTH_SHORT).show()
+                }
+                FormSubmissionStatus.Loading -> {
+                    Toast.makeText(context, "Submitting...", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

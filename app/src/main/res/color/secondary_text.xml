@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when disabled -->
+    <item android:state_enabled="false" android:color="#BDBDBD">
+        <color android:color="#BDBDBD" /> <!-- Very light grey for disabled text -->
+    </item>
+    <!-- Default state -->
+    <item android:color="#757575">
+        <color android:color="#757575" /> <!-- Medium grey for secondary text -->
+    </item>
+</selector>

@@ -74,10 +74,14 @@ class MarkerDetailsFragment : DialogFragment() {
             dismiss()
         }
 
-        // Send report method
+        // Handle Send Report button click
         sendReportButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putLong("trashcanId", trashcanId ?: -1L) // Ensure correct Long type
+            if (trashcanId == null || trashcanId == -1L) {
+                //Toast.makeText(requireContext(), R.string.error_invalid_trashcan_id, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val bundle = Bundle().apply { putLong("trashcanId", trashcanId!!) }
             findNavController().navigate(R.id.action_markerDetails_to_formFragment, bundle)
             dismiss()
         }
