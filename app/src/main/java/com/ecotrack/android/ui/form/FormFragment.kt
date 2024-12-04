@@ -7,12 +7,12 @@ import androidx.fragment.app.Fragment
 import com.ecotrack.android.R
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.Button
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 
 class FormFragment : Fragment(R.layout.fragment_form) {
 
     private lateinit var formViewModel: FormViewModel
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,11 +20,17 @@ class FormFragment : Fragment(R.layout.fragment_form) {
         // Initialize ViewModel
         formViewModel = ViewModelProvider(this).get(FormViewModel::class.java)
 
+
+
         // Retrieve the trashcan ID passed as an argument
-        val trashcanId = arguments?.getString("trashcanId") // Ensure it matches the argument type
+        //val trashcanId = arguments?.getString("id")?.toLongOrNull() // Ensure it matches the argument type
+
+
+        val trashcanId = arguments?.getLong("trashcanId")
+
         val trashcanIdField: TextInputEditText = view.findViewById(R.id.editTextTrashcanId)
         trashcanId?.let {
-            trashcanIdField.setText(it) // Automatically fill the field if ID is present
+            trashcanIdField.setText(it.toString()) // Automatically fill the field if ID is present
             trashcanIdField.isEnabled = false // Prevent editing of the ID field
         }
 
@@ -32,6 +38,7 @@ class FormFragment : Fragment(R.layout.fragment_form) {
         val emailEditText = view.findViewById<TextInputEditText>(R.id.editTextEmail)
         val descriptionEditText = view.findViewById<TextInputEditText>(R.id.editTextDescription)
         val submitButton = view.findViewById<Button>(R.id.submit_button)
+
 
         // Set up submit button click listener
         submitButton.setOnClickListener {
@@ -43,15 +50,19 @@ class FormFragment : Fragment(R.layout.fragment_form) {
                 Toast.makeText(context, "Please fill in all fields correctly", Toast.LENGTH_SHORT).show()
             } else {
                 // Submit the form data using ViewModel
-                submitForm(trashcanId ?: "", userEmail, description)
+                Toast.makeText(context, "Trashcan ID: $trashcanId", Toast.LENGTH_SHORT).show()
+                submitForm(trashcanId, userEmail, description)
             }
         }
     }
 
+
+
     /**
      * Submit the form data using the ViewModel.
      */
-    private fun submitForm(trashcanId: String, email: String, description: String) {
+    private fun submitForm(trashcanId: Long?, email: String, description: String) {
+
         formViewModel.submitForm(trashcanId, email, description)
 
         // Observe submission status

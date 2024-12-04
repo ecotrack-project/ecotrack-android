@@ -14,6 +14,7 @@ class FormViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
+
     // LiveData per tracciare lo stato della sottomissione del modulo
     private val _formSubmissionStatus = MutableLiveData<FormSubmissionStatus>()
     val formSubmissionStatus: LiveData<FormSubmissionStatus> = _formSubmissionStatus
@@ -32,7 +33,7 @@ class FormViewModel : ViewModel() {
      * @param email The user's email address.
      * @param description The report description.
      */
-    fun submitForm(trashcanId: String, email: String, description: String) {
+    fun submitForm(trashcanId: Long?, email: String, description: String) {
         // Simula una chiamata al backend (o usa una vera API)
         _formSubmissionStatus.value = FormSubmissionStatus.Loading
 
@@ -54,13 +55,16 @@ class FormViewModel : ViewModel() {
      * Simulates a backend API call.
      * Replace this with actual Retrofit or API service calls.
      */
-    private suspend fun simulateBackendCall(trashcanId: String, email: String, description: String) {
+    private suspend fun simulateBackendCall(trashcanId: Long?, email: String, description: String) {
         // Simulazione di una chiamata API con ritardo
         kotlinx.coroutines.delay(2000) // Simula una chiamata che richiede 2 secondi
-        if (trashcanId.isBlank() || email.isBlank() || description.isBlank()) {
+        if (trashcanId.toString().isBlank() || email.isBlank() || description.isBlank()) {
             throw IllegalArgumentException("Invalid input data")
         }
     }
+
+
+
 }
 
 /**
