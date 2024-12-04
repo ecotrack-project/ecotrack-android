@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ecotrack.android.services.RetrofitClient
 import kotlinx.coroutines.launch
+import model.Report
 
 class FormViewModel : ViewModel() {
 
@@ -27,29 +29,51 @@ class FormViewModel : ViewModel() {
         _text.value = newText
     }
 
-    /**
-     * Submits the form data to the backend.
-     * @param trashcanId The ID of the trashcan.
-     * @param email The user's email address.
-     * @param description The report description.
-     */
+
     fun submitForm(trashcanId: Long?, email: String, description: String) {
-        // Simula una chiamata al backend (o usa una vera API)
+        // Verifica input
+        if (trashcanId == null || trashcanId <= 0 || email.isBlank() || description.isBlank()) {
+            _formSubmissionStatus.value = FormSubmissionStatus.Error("Invalid input")
+            return
+        }
+
         _formSubmissionStatus.value = FormSubmissionStatus.Loading
 
         viewModelScope.launch {
             try {
+                // Crea l'oggetto Report da inviare
+                val report = Report(
+                    email = email,
+                    trashcanId = trashcanId,
+                    description = description
+                )
                 // Simula un'operazione di invio al backend
-                simulateBackendCall(trashcanId, email, description)
+                //simulateBackendCall(trashcanId, email, description)
+                // Chiamata reale al backend tramite Retrofit
+                val response = RetrofitClient.reportService.createReport(report)
 
-                // Aggiorna lo stato a Success dopo l'invio
-                _formSubmissionStatus.value = FormSubmissionStatus.Success
+                // Controlla la risposta del backend
+                if (response.isSuccessful) {
+                    _formSubmissionStatus.value = FormSubmissionStatus.Success
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: "Unknown server error"
+                    _formSubmissionStatus.value = FormSubmissionStatus.Error("Server error: $errorMessage")
+                }
             } catch (e: Exception) {
-                // Aggiorna lo stato a Error se qualcosa va storto
-                _formSubmissionStatus.value = FormSubmissionStatus.Error(e.message ?: "Unknown error")
+                // Gestione di errori generici (es. timeout, connessione)
+                _formSubmissionStatus.value = FormSubmissionStatus.Error(e.message ?: "Connection error")
             }
         }
     }
+
+
+
+
+
+
+
+
+
 
     /**
      * Simulates a backend API call.

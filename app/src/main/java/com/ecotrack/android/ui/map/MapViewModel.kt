@@ -128,7 +128,8 @@ class MapViewModel : ViewModel() {
         // Show a toast to indicate the start of the API call
         Toast.makeText(appContext, "Loading trashcans...", Toast.LENGTH_SHORT).show()
 
-        val apiService = RetrofitClient.instance // Instance of the Retrofit service interface TrashcanService
+        val apiService = RetrofitClient.trashcanService // Instance of the Retrofit service interface TrashcanService
+
         apiService.getAllTrashcans().enqueue(object : Callback<TrashcanApiResponse> {
 
             override fun onResponse(call: Call<TrashcanApiResponse>, response: Response<TrashcanApiResponse>) {
