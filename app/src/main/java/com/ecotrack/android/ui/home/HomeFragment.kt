@@ -13,18 +13,18 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // Dummy data for testing
         val timetableData = listOf(
-            listOf("Rifiuti Organici", "—", "—", "✓", "—", "—", "—"),
-            listOf("Vetro e Lattine", "✓", "—", "—", "—", "—", "—"),
-            listOf("Carta e Cartone", "—", "—", "—", "✓", "—", "—")
+            listOf("Tipo di rifiuto", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"),
+            listOf("Carta", "☐", "☐", "✅", "☐", "☐", "✅"),
+            listOf("Plastica", "☐", "☐", "☐", "☐", "✅", "☐"),
+            listOf("Umido", "✅", "☐", "☐", "✅", "☐", "☐"),
+            listOf("Indifferenziata", "☐", "✅", "☐", "☐", "☐", "☐"),
+            listOf("Vetro", "☐", "☐", "☐", "☐", "☐", "✅")
         )
 
         // Set up RecyclerView
@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -23,7 +23,8 @@
         android:singleLine="false"
         android:text="@string/trash_type"
         android:textColor="?colorOnSecondary"
-        android:textSize="18sp" />
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/fillingLevelTextView"

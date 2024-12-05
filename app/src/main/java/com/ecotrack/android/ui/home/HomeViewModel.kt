@@ -11,12 +11,16 @@ class HomeViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
+
     private val _wasteCollectionTimetable = MutableLiveData<List<List<String>>>().apply {
         // Dati di esempio: ogni sotto-lista rappresenta una riga con i giorni della settimana
         value = listOf(
-            listOf("Rifiuti Organici", "—", "—", "✓", "—", "—", "—"),
-            listOf("Vetro e Lattine", "✓", "—", "—", "—", "—", "—"),
-            listOf("Carta e Cartone", "—", "—", "—", "✓", "—", "—")
+            listOf("Tipo di rifiuto", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"),
+            listOf("Carta", "—", "—", "✓", "—", "—", "—"),
+            listOf("Plastica", "✓", "—", "—", "—", "—", "—"),
+            listOf("Umido", "—", "—", "—", "✓", "—", "—"),
+            listOf("Indifferenziata", "✓", "—", "—", "—", "—", "—"),
+            listOf("Vetro", "—", "—", "—", "✓", "—", "—")
         )
     }
     val wasteCollectionTimetable: LiveData<List<List<String>>> = _wasteCollectionTimetable

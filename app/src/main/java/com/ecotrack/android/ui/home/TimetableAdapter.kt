@@ -22,8 +22,7 @@ class TimetableAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimetableViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_timetable_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_timetable_row, parent, false)
         return TimetableViewHolder(view)
     }
 

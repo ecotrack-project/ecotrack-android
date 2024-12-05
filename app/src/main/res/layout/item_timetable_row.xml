@@ -14,11 +14,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:padding="8dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
         android:gravity="center_vertical"
-        android:textColor="#000000" />
+        android:padding="8dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <!-- Monday Column -->
     <TextView
@@ -29,7 +29,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <!-- Tuesday Column -->
     <TextView
@@ -40,7 +41,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <!-- Wednesday Column -->
     <TextView
@@ -51,7 +53,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <!-- Thursday Column -->
     <TextView
@@ -62,7 +65,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <!-- Friday Column -->
     <TextView
@@ -73,7 +77,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <!-- Saturday Column -->
     <TextView
@@ -84,5 +89,6 @@
         android:gravity="center"
         android:padding="8dp"
         android:textSize="14sp"
-        android:textColor="#666666" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 </LinearLayout>
