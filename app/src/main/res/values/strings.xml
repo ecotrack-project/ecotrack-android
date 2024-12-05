@@ -14,7 +14,7 @@
     <string name="submit_button">Invia</string>
     <string name="description">Descrizione</string>
     <string name="email">E-mail</string>
-    <string name="WasteCollectionTimetable">Waste Collection Timetable</string>
-    <string name="trashcan_id">ID del Cestino</string>
+    <string name="WasteCollectionTimetable">Orario di Raccolta dei Rifiuti</string>
+    <string name="trashcan_id">ID</string>
 
 </resources>
