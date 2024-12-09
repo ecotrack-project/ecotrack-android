@@ -8,14 +8,23 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+
 import com.ecotrack.android.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
+
+/**
+ * @MainActivity for the application
+ */
 class MainActivity : AppCompatActivity() {
 
 
+    /**
+     * Companion object to provide global access to the application context
+     */
     companion object {
+
         private lateinit var instance: MainActivity
 
         fun getAppContext(): Context {
@@ -23,13 +32,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        instance = this
+        instance = this // Set the instance to the current activity
 
         // Inflate the layout using ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -59,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_home -> {
+                    // Navigate to HomeFragment if not already there
                     navController.navigate(R.id.navigation_home)
                     true
                 }

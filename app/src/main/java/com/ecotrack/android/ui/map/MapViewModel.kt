@@ -117,9 +117,7 @@ class MapViewModel : ViewModel() {
             MarkerData(id = 50L, position = LatLng(41.119483, 16.871983), fillinglevel = 19, trashType = "Carta")
         )*/
 
-
     }
-
 
 
     fun loadTrashcans() {
@@ -176,17 +174,24 @@ class MapViewModel : ViewModel() {
         _userLocation.value = location
     }
 
-    // Add marker method
+
+
+    //------------------------------ FUTURE IMPLEMENTATION ---------------------------
+    // Add marker method in case the app will be extended to allow ADMINS to add trashcans
     fun addMarker(marker: MarkerData) {
         val updatedMarkers = _markers.value.orEmpty().toMutableList()
         updatedMarkers.add(marker)
         _markers.value = updatedMarkers
     }
 
-    // Remove marker method
+    // Remove marker method in case the app will be extended to allow ADMINS to remove trashcans
     fun removeMarker(marker: MarkerData) {
         val updatedMarkers = _markers.value.orEmpty().toMutableList()
         updatedMarkers.remove(marker)
         _markers.value = updatedMarkers
     }
+
+
+
+
 }

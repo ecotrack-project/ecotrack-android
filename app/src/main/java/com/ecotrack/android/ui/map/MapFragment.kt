@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -50,8 +51,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     // User position
     private var userPos: LatLng? = null
 
-
-
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val DEFAULT_ZOOM_LEVEL = 15f
@@ -76,6 +75,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return rootView
     }
 
+
     // Create Google Map
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
@@ -84,7 +84,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             enableUserLocation()
         } else {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            //requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
         // Set the OnMarkerClickListener
@@ -169,6 +170,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
 
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            enableUserLocation()
+        } else {
+            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
 
     // Variabile globale per la polilinea
     private var currentPolyline: Polyline? = null
@@ -192,7 +205,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 parseDirectionsResponse(response)
             },
             { _ ->
-                Toast.makeText(context, "Errore nel calcolo della rotta", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error computing the route!", Toast.LENGTH_SHORT).show()
             })
         requestQueue.add(request)
     }
@@ -232,16 +245,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+
+
     // Move camera on user
     private fun moveCameraToUserPosition(position: LatLng) {
         val zoomLevel = 15f
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(position, zoomLevel))
     }
-
-
-
-
-
 
 
     // Position
