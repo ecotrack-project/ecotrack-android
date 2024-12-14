@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ecotrack.android.R
 
 class TimetableAdapter(
-    private val data: List<List<String>>
+    private val data: List<List<String>>,
+    private val colorMap: Map<String, Int> // Mappa per i colori
 ) : RecyclerView.Adapter<TimetableAdapter.TimetableViewHolder>() {
 
     class TimetableViewHolder(view: View) : RecyclerView.ViewHolder(view) {

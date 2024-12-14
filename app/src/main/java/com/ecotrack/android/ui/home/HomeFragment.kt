@@ -19,11 +19,11 @@ class HomeFragment : Fragment() {
 
         // Dummy data for testing
         val timetableData = listOf(
-            listOf("Tipo di rifiuto", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"),
-            listOf("Carta", "☐", "☐", "✅", "☐", "☐", "✅"),
-            listOf("Plastica", "☐", "☐", "☐", "☐", "✅", "☐"),
+            listOf("Tipo", "L", "M", "M", "G", "V", "S"),
             listOf("Umido", "✅", "☐", "☐", "✅", "☐", "☐"),
             listOf("Indifferenziata", "☐", "✅", "☐", "☐", "☐", "☐"),
+            listOf("Plastica", "☐", "☐", "✅", "☐", "✅", "☐"),
+            listOf("Carta", "☐", "☐", "✅", "☐", "☐", "☐"),
             listOf("Vetro", "☐", "☐", "☐", "☐", "☐", "✅")
         )
 
