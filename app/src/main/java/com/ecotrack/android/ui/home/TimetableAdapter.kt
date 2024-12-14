@@ -36,6 +36,11 @@ class TimetableAdapter(
         holder.dayThu.text = row[4]
         holder.dayFri.text = row[5]
         holder.daySat.text = row[6]
+
+        // Imposta il colore di sfondo in base alla tipologia
+        val rowType = row[0] // La tipologia è nella prima colonna
+        val rowColor = colorMap[rowType] ?: android.graphics.Color.WHITE // Colore di default
+        holder.itemView.setBackgroundColor(rowColor)
     }
 
     override fun getItemCount(): Int = data.size

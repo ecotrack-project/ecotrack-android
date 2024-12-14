@@ -13,6 +13,14 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    val colorMap = mapOf(
+        "Umido" to android.graphics.Color.parseColor("#D7B19D"),
+        "Indiff." to android.graphics.Color.parseColor("#E0E0E0"),
+        "Plast." to android.graphics.Color.parseColor("#FFEB3B"),
+        "Carta" to android.graphics.Color.parseColor("#90CAF9"),
+        "Vetro" to android.graphics.Color.parseColor("#A5D6A7")
+    )
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -21,16 +29,17 @@ class HomeFragment : Fragment() {
         val timetableData = listOf(
             listOf("Tipo", "L", "M", "M", "G", "V", "S"),
             listOf("Umido", "✅", "☐", "☐", "✅", "☐", "☐"),
-            listOf("Indifferenziata", "☐", "✅", "☐", "☐", "☐", "☐"),
-            listOf("Plastica", "☐", "☐", "✅", "☐", "✅", "☐"),
+            listOf("Indiff.", "☐", "✅", "☐", "☐", "☐", "☐"),
+            listOf("Plast.", "☐", "☐", "✅", "☐", "✅", "☐"),
             listOf("Carta", "☐", "☐", "✅", "☐", "☐", "☐"),
             listOf("Vetro", "☐", "☐", "☐", "☐", "☐", "✅")
         )
 
         // Set up RecyclerView
-        val adapter = TimetableAdapter(timetableData)
+        val adapter = TimetableAdapter(timetableData, colorMap)
         binding.recyclerViewTable.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewTable.adapter = adapter
+
 
         return binding.root
     }
