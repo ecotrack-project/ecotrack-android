@@ -69,14 +69,5 @@
             android:backgroundTint="@color/blue_500"
             android:importantForAccessibility="yes" />
 
-        <!-- Abort Button -->
-        <Button
-            android:id="@+id/abort_button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/abort_button"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/red_700"
-            android:importantForAccessibility="yes" />
     </LinearLayout>
 </ScrollView>

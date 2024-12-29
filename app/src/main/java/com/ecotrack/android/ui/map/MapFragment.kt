@@ -110,11 +110,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Move the camera to the user's location if available
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
-                //val userLatLng = LatLng(it.latitude, it.longitude)
+                //val userLatLng = LatLng(it.latitude, it.longitude)  // Use the real location of the user
                 val userLatLng = LatLng(45.06365, 7.66030)
-
                 this.userPos = userLatLng
-
                 viewModel.updateUserLocation(userLatLng)
 
                 googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, DEFAULT_ZOOM_LEVEL))
@@ -142,9 +140,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 val originalIcon = BitmapFactory.decodeResource(resources, iconUrl)
-
                 val scaledIcon = Bitmap.createScaledBitmap(originalIcon, 120, 120, false)
-
                 val icon = BitmapDescriptorFactory.fromBitmap(scaledIcon)
 
                 googleMap?.addMarker(
@@ -200,8 +196,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Request
         val requestQueue = Volley.newRequestQueue(context)
         val request = StringRequest(
-            Request.Method.GET, url,
-            { response ->
+            Request.Method.GET, url, { response ->
                 parseDirectionsResponse(response)
             },
             { _ ->
@@ -267,6 +262,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+
     // Method for click on marker
     private fun handleMarkerClick(marker: Marker) {
         val markerData = markerDataMap[marker]
@@ -277,8 +273,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             dialogFragment.show(parentFragmentManager, "MarkerDetailsFragment")
         }
     }
-
-
 
 
 
@@ -302,4 +296,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
         mapView.onLowMemory()
     }
+
+
 }

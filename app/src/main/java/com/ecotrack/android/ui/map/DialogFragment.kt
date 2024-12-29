@@ -58,6 +58,7 @@ class MarkerDetailsFragment : DialogFragment() {
         val sendReportButton: Button = view.findViewById(R.id.send_report)
 
         trashTypeTextView.text = trashType
+
         fillingLevelTextView.text = "Livello di riempimento: $fillinglevel%"
 
         closeButton.setOnClickListener {

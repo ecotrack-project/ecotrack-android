@@ -77,4 +77,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        print("MainActivity: onStart")
+    }
+    override fun onResume() {
+        super.onResume()
+        print("MainActivity: onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        print("MainActivity: onPause")
+    }
+    override fun onStop() {
+        super.onStop()
+        print("MainActivity: onStop")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        print("MainActivity: onRestart")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        print("MainActivity: onDestroy")
+    }
+
+
 }
